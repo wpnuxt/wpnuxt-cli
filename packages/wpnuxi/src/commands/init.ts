@@ -6,7 +6,7 @@ import { downloadTemplate } from 'giget'
 import { detectPackageManager, installDependencies } from 'nypm'
 import { resolve } from 'pathe'
 import pc from 'picocolors'
-import { isDirEmpty, isValidUrl } from './utils'
+import { isDirEmpty, isValidUrl } from '../utils'
 
 const DEFAULT_WP_URL = 'http://127.0.0.1:9400'
 
@@ -15,11 +15,10 @@ function onCancel() {
   process.exit(0)
 }
 
-export const main = defineCommand({
+export default defineCommand({
   meta: {
-    name: 'create-wpnuxt',
-    version: '0.1.0',
-    description: 'Scaffold a WPNuxt project'
+    name: 'init',
+    description: 'Scaffold a new WPNuxt project'
   },
   args: {
     dir: {

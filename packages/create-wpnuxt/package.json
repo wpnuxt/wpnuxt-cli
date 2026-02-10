@@ -1,0 +1,35 @@
+{
+  "name": "create-wpnuxt",
+  "version": "0.1.0",
+  "description": "Scaffold a WPNuxt project",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "create-wpnuxt": "./bin/create-wpnuxt.mjs"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "citty": "^0.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsdown": "^0.12.0",
+    "typescript": "^5.9.3"
+  }
+}
