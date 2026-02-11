@@ -3,11 +3,11 @@ import { execSync } from 'node:child_process'
 import { defineCommand } from 'citty'
 import * as p from '@clack/prompts'
 import { downloadTemplate } from 'giget'
-import { detectPackageManager } from 'nypm'
+import { detectPackageManager, installDependencies } from 'nypm'
 import { resolve } from 'pathe'
 import pc from 'picocolors'
 import { isDirEmpty, isValidUrl, wpNuxtAscii, themeColor } from '../utils'
-import { addBlocks, addAuth } from '../add'
+// import { addBlocks, addAuth } from '../add'
 
 const DEFAULT_WP_URL = 'http://127.0.0.1:9400'
 
@@ -138,35 +138,33 @@ export default defineCommand({
       process.exit(1)
     }
 
-    // Minimal template: ask about additional modules
-    let shouldAddBlocks = false
-    let shouldAddAuth = false
+    // TODO: Minimal template: ask about additional modules
+    // let shouldAddBlocks = false
+    // let shouldAddAuth = false
 
-    if (template === 'minimal') {
-      const addFlag = args.add
-      if (addFlag) {
-        // Non-interactive: parse --add flag
-        const modules = addFlag.split(',').map(m => m.trim())
-        shouldAddBlocks = modules.includes('blocks')
-        shouldAddAuth = modules.includes('auth')
-      }
-      else {
-        // Interactive: prompt
-        const blocksResult = await p.confirm({
-          message: 'Add @wpnuxt/blocks?',
-          initialValue: false
-        })
-        if (p.isCancel(blocksResult)) return onCancel()
-        shouldAddBlocks = blocksResult
+    // if (template === 'minimal') {
+    //   const addFlag = args.add
+    //   if (addFlag) {
+    //     const modules = addFlag.split(',').map(m => m.trim())
+    //     shouldAddBlocks = modules.includes('blocks')
+    //     shouldAddAuth = modules.includes('auth')
+    //   }
+    //   else {
+    //     const blocksResult = await p.confirm({
+    //       message: 'Add @wpnuxt/blocks?',
+    //       initialValue: false
+    //     })
+    //     if (p.isCancel(blocksResult)) return onCancel()
+    //     shouldAddBlocks = blocksResult
 
-        const authResult = await p.confirm({
-          message: 'Add @wpnuxt/auth?',
-          initialValue: false
-        })
-        if (p.isCancel(authResult)) return onCancel()
-        shouldAddAuth = authResult
-      }
-    }
+    //     const authResult = await p.confirm({
+    //       message: 'Add @wpnuxt/auth?',
+    //       initialValue: false
+    //     })
+    //     if (p.isCancel(authResult)) return onCancel()
+    //     shouldAddAuth = authResult
+    //   }
+    // }
 
     const templateRepo = template === 'minimal' ? 'github:wpnuxt/starter-minimal' : 'github:wpnuxt/starter'
 
@@ -217,46 +215,43 @@ export default defineCommand({
     p.log.step('Configuring environment...')
     writeFileSync(resolve(targetDir, '.env'), `WPNUXT_WORDPRESS_URL=${wpUrl}\n`)
 
-    // Add optional modules for minimal template
-    if (template === 'minimal') {
-      if (shouldAddBlocks) {
-        s.start('Adding @wpnuxt/blocks...')
-        try {
-          await addBlocks({ cwd: targetDir, skipInstall: true })
-          s.stop('@wpnuxt/blocks added.')
-        }
-        catch (err) {
-          s.stop(pc.yellow('Failed to add @wpnuxt/blocks.'))
-          p.log.warn(String(err))
-        }
-      }
+    // TODO: Add optional modules for minimal template
+    // if (template === 'minimal') {
+    //   if (shouldAddBlocks) {
+    //     s.start('Adding @wpnuxt/blocks...')
+    //     try {
+    //       await addBlocks({ cwd: targetDir, skipInstall: true })
+    //       s.stop('@wpnuxt/blocks added.')
+    //     }
+    //     catch (err) {
+    //       s.stop(pc.yellow('Failed to add @wpnuxt/blocks.'))
+    //       p.log.warn(String(err))
+    //     }
+    //   }
 
-      if (shouldAddAuth) {
-        s.start('Adding @wpnuxt/auth...')
-        try {
-          await addAuth({ cwd: targetDir, skipInstall: true })
-          s.stop('@wpnuxt/auth added.')
-        }
-        catch (err) {
-          s.stop(pc.yellow('Failed to add @wpnuxt/auth.'))
-          p.log.warn(String(err))
-        }
-      }
-    }
+    //   if (shouldAddAuth) {
+    //     s.start('Adding @wpnuxt/auth...')
+    //     try {
+    //       await addAuth({ cwd: targetDir, skipInstall: true })
+    //       s.stop('@wpnuxt/auth added.')
+    //     }
+    //     catch (err) {
+    //       s.stop(pc.yellow('Failed to add @wpnuxt/auth.'))
+    //       p.log.warn(String(err))
+    //     }
+    //   }
+    // }
 
     // Install dependencies
     if (!args['skip-install']) {
       s.start(`Installing dependencies with ${pm}...`)
       try {
-        execSync(`${pm} install`, { cwd: targetDir, stdio: 'pipe' })
+        await installDependencies({ cwd: targetDir, silent: true, ignoreWorkspace: true, packageManager: { name: pm as 'npm' | 'pnpm' | 'yarn' | 'bun', command: pm } })
         s.stop('Dependencies installed.')
       }
-      catch (err: any) {
+      catch {
+        // Postinstall may fail (e.g. blueprint not running) but deps are installed
         s.stop('Dependencies installed.')
-        const stderr = err?.stderr?.toString()?.trim()
-        if (stderr) {
-          p.log.warn(stderr)
-        }
       }
     }
 
