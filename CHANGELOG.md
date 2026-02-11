@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [0.3.0](https://github.com/wpnuxt/cli/compare/v0.2.0...v0.3.0) (2026-02-11)
+
+### Features
+
+* add blueprint option to init command for WordPress environment selection ([f14630a](https://github.com/wpnuxt/cli/commit/f14630a9c080255cada05859c9111346674f6d26))
+
 ## [0.2.0](https://github.com/wpnuxt/cli/compare/v0.1.0...v0.2.0) (2026-02-11)
 
 ### Features
