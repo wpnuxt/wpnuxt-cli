@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.4.0](https://github.com/wpnuxt/cli/compare/v0.3.0...v0.4.0) (2026-02-12)
+
+### Features
+
+* add custom test scripts for wpnuxt ([d666f21](https://github.com/wpnuxt/cli/commit/d666f215d2a5dd7a718e4e3f5b8922a65ebf17b3))
+* refactor version handling and enhance login functionality ([22b7b67](https://github.com/wpnuxt/cli/commit/22b7b67a1df8fca5b5fa97d528e8a63c5b744180))
+
 ## [0.3.0](https://github.com/wpnuxt/cli/compare/v0.2.0...v0.3.0) (2026-02-11)
 
 ### Features
