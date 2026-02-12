@@ -1,10 +1,11 @@
 import { defineCommand } from 'citty'
+import { version } from '../package.json'
 import { commands } from './commands'
 
 export const main = defineCommand({
   meta: {
     name: 'wpnuxi',
-    version: '0.1.0',
+    version,
     description: 'WPNuxt CLI'
   },
   subCommands: commands

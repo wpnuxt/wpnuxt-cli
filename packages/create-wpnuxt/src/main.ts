@@ -1,10 +1,11 @@
 import { defineCommand } from 'citty'
+import { version } from '../package.json'
 import init from '../../wpnuxi/src/commands/init'
 
 export const main = defineCommand({
   meta: {
     name: 'create-wpnuxt',
-    version: '0.1.0',
+    version,
     description: 'Scaffold a WPNuxt project'
   },
   args: init.args,
