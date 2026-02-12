@@ -1,6 +1,8 @@
 # Changelog
 
 
+## [0.4.1](https://github.com/wpnuxt/cli/compare/v0.4.0...v0.4.1) (2026-02-12)
+
 ## [0.4.0](https://github.com/wpnuxt/cli/compare/v0.3.0...v0.4.0) (2026-02-12)
 
 ### Features
